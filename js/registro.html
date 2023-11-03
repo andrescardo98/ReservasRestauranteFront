@@ -67,6 +67,8 @@
                 });
 
                 form.addEventListener("submit", function(e){
+                    e.preventDefault();
+                    window.location.href="login.html";
                     fetch('http://localhost/reservasrestaurante/api/v1/cliente', {
                     method: 'POST', 
                     body: JSON.stringify({
@@ -105,8 +107,6 @@
                     .catch(error => {
                     console.error('Error:', error);
                     });
-                    e.preventDefault();
-                    window.location.href="login.html";
                 });
             });
         </script>
