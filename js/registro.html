@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE-edge">
+        <meta name="viewport" content="width-device-width, initial-scale=1.0">
+        <title>Login</title>
+        <link rel="stylesheet" href="./css/styleRegistro.css">
+    </head>
+    <body>
+        <form>
+            <img src="user.png" alt="user-img"><br>
+
+            <label for="Name">Primer nombre</label>
+            <input type="text" id="firstName" placeholder="Ingresa tu primer nombre" required>
+
+            <label for="Name">Segundo nombre</label>
+            <input type="text" id="secondName" placeholder="Ingresa tu segundo nombre">
+
+            <label for="surname">Primer Apellido</label>
+            <input type="text" id="firstSurname" placeholder="Ingresa tu primer apellido" required>
+            
+            <label for="surname">Segundo Apellido</label>
+            <input type="text" id="secondSurname" placeholder="Ingresa tu segungo apellido" required>
+
+            <label for="email">Correo electrónico</label>
+            <input type="text" id="email" placeholder="Ingresa tu mejor correo electrónico" required>
+
+            <label for="celular">Numero Celular</label>
+            <input type="text" id="numeroCelular" placeholder="Ingresa tu número de celular" required>
+
+            <label for="birthdate">Fecha nacimiento</label>
+            <input type="date" id="fechaNacimiento" required>
+            
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" placeholder="Contraseña" required>
+            <label for="confirmPassword">Confirma la contraseña</label>
+            <input type="password" id="confirmPassword" placeholder="Contraseña" required>
+            <div class="box-visible">
+                <input type="checkbox" id="visible">
+                <label for="visible">Mostrar contraseña</label>
+            </div>
+            
+            <button type="submit" id="submit">Iniciar sesión</button>
+        </form>
+        <script>
+            document.addEventListener("DOMContentLoaded", function(){
+                const primerNombre = document.getElementById("firstName");
+                const segundoNombre = document.getElementById("secondName");
+                const apellidos = document.getElementById("surname");
+                const email = document.getElementById("email");
+                const numeroCelular = document.getElementById("numeroCelular");
+                const password = document.getElementById("password");
+                const confirmPassword = document.getElementById("confirmPassword");
+                const fechaNacimiento = document.getElementById("fechaNacimiento");
+                const visible = document.getElementById("visible");
+                const form = document.querySelector("form");
+
+                visible.addEventListener("change", function(){
+                    if((password.type === "password")||(confirmPassword.type === "confirmPassword")){
+                        password.type = "text";
+                        confirmPassword.type = "text";
+                    }else{
+                        password.type = "password";
+                        confirmPassword.type = "password";
+                    }
+                });
+
+                form.addEventListener("submit", function(e){
+                    fetch('http://localhost/reservasrestaurante/api/v1/cliente', {
+                    method: 'POST', 
+                    body: JSON.stringify({
+                        id: 'data1',
+                        identificacion: {
+                            numeroIdentificacion:"",
+                            tipoIdentificacion:{
+                                id:"b9fa0f1d-9d8c-444a-9804-5023602485e9",
+                            }
+                        },
+                        nombreCompleto: {
+                            primerNombre:primerNombre.value,
+                            segundoNombre:segundoNombre.value,
+                            primerApellido:primerApellido.value,
+                            segundoApellido:segundoApellido.value
+                        },
+                        correoElectronico: {
+                            correoElectronico:email.value,
+                            correoElectronicoConfirmado:false,
+                            clave:password.value
+                        },
+                        fechaNacimiento:fechaNacimiento.value,
+                        pais: {
+                            id:"2309c06d-f3dd-4913-84c6-3869eff94836",
+                        },
+                        numeroCelular: {
+                            numeroCelular:numeroCelular.value,
+                            numeroCelularConfirmado:false
+                        }
+                    }) 
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                    console.log(data);
+                    })
+                    .catch(error => {
+                    console.error('Error:', error);
+                    });
+                    e.preventDefault();
+                    window.location.href="login.html";
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservas en el Restaurante</title>
+    <link rel="stylesheet" href="./css/styleHome.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Reserva en el Restaurante</h2>
+        <form id="reservation-form">
+            <div class="form-group">
+                <label for="date">Fecha:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+            <div class="form-group">
+                <label for="time">Hora:</label>
+                <input type="time" id="time" name="time" required>
+            </div>
+            <div class="form-group">
+                <label for="table">Mesa:</label>
+                <div class="table-selection" id="table-selection"></div>
+            </div>
+            <div class="form-group">
+                <label for="people">Cantidad de Personas:</label>
+                <input type="number" id="people" name="people" required>
+            </div>
+            <button type="button" class="submit-btn" onclick="Reservar()">Realizar Reserva</button>
+            <button type="button" class="cerrarSesion">Cerrar sesión</button>
+        </form>
+    </div>
+
+    <script>
+        const tablesContainer = document.getElementById('table-selection');
+
+        // Crear 10 mesas y agregarlas al contenedor
+        for (let i = 1; i <= 10; i++) {
+            const table = document.createElement('div');
+            table.className = 'table';
+            table.innerText = i;
+            table.addEventListener('click', () => selectTable(i));
+            tablesContainer.appendChild(table);
+        }
+
+        let selectedTable = null;
+
+        function selectTable(tableNumber) {
+            // Deseleccionar mesa previamente seleccionada
+            if (selectedTable) {
+                selectedTable.classList.remove('selected');
+            }
+            
+            // Seleccionar mesa actual
+            selectedTable = tablesContainer.children[tableNumber - 1];
+            selectedTable.classList.add('selected');
+        }
+
+        function Reservar() {
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const people = document.getElementById('people').value;
+
+            if (!date || !time || !selectedTable || !people) {
+                alert('Por favor, complete todos los campos.');
+                return;
+            }
+
+            const tableNumber = Array.from(tablesContainer.children).indexOf(selectedTable) + 1;
+            alert(`Reserva realizada:\nFecha: ${date}\nHora: ${time}\nMesa: ${tableNumber}\nCantidad de Personas: ${people}`);
+        }
+    </script>
+</body>
+</html>
