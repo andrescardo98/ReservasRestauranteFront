@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE-edge">
+        <meta name="viewport" content="width-device-width, initial-scale=1.0">
+        <title>Login</title>
+        <link rel="stylesheet" href="./css/stylePais.css">
+    </head>
+    <body>
+        <form>
+            <img src="pais.png" alt="user-img"><br>
+
+            <label for="nombre">Nombre del país</label>
+            <input type="text" id="nombre" placeholder="Ingresa el nombre" required>
+
+            <label for="codigo_indicativo">Código indicativo</label>
+            <input type="text" id="codigo_indicativo" placeholder="Ingresa el código indicativo">
+
+            <label for="codigo_iso3">Códgio ISO 3</label>
+            <input type="text" id="codigo_iso3" placeholder="Ingresa el código ISO 3" required>
+            
+            <button type="submit" id="submit">Registrar</button>
+        </form>
+        <script>
+            document.addEventListener("DOMContentLoaded", function(){
+                const nombre = document.getElementById("nombre");
+                const codigo_indicativo = document.getElementById("codigo_indicativo");
+                const codigo_iso3 = document.getElementById("codigo_iso3");
+                const form = document.querySelector("form");
+
+                form.addEventListener("submit", function(e){
+                    e.preventDefault();
+                    alert(nombre.value)
+                    alert(codigo_indicativo.value)
+                    alert(codigo_iso3.value);
+                    fetch('http://localhost/reservasrestaurante/api/v1/pais', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type':'application/json',
+                        }, 
+                        body: JSON.stringify({
+                            nombre:nombre.value,
+                            codigoIndicativo: codigo_indicativo.value,
+                            codigo_iso3: codigo_iso3.value
+                        }) 
+                        })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
