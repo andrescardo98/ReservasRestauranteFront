@@ -24,16 +24,13 @@
         </form>
         <script>
             document.addEventListener("DOMContentLoaded", function(){
-                const nombre = document.getElementById("nombre");
-                const codigo_indicativo = document.getElementById("codigo_indicativo");
-                const codigo_iso3 = document.getElementById("codigo_iso3");
-                const form = document.querySelector("form");
+                let nombre = document.getElementById("nombre");
+                let codigo_indicativo = document.getElementById("codigo_indicativo");
+                let codigo_iso3 = document.getElementById("codigo_iso3");
+                let form = document.querySelector("form");
 
                 form.addEventListener("submit", function(e){
                     e.preventDefault();
-                    alert(nombre.value)
-                    alert(codigo_indicativo.value)
-                    alert(codigo_iso3.value);
                     fetch('http://localhost/reservasrestaurante/api/v1/pais', {
                         method: 'POST',
                         headers: {
@@ -42,14 +39,19 @@
                         body: JSON.stringify({
                             nombre:nombre.value,
                             codigoIndicativo: codigo_indicativo.value,
-                            codigo_iso3: codigo_iso3.value
+                            codigoIso3: codigo_iso3.value
                         }) 
                         })
                     .then(response => response.json())
                     .then(data => {
+                        nombre.value = "";
+                        codigo_indicativo.value = "";
+                        codigo_iso3.value = "";
                         console.log(data);
+                        alert(data.mensajes[0]);
                     })
                     .catch(error => {
+                        alert(error.mensajes[0]);
                         console.error('Error:', error);
                     });
                 });

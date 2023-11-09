@@ -27,8 +27,6 @@
 
                 form.addEventListener("submit", function(e){
                     e.preventDefault();
-                    alert(nombre.value)
-                    alert(codigo.value)
                     fetch('http://localhost/reservasrestaurante/api/v1/tipoidentificacion', {
                         method: 'POST',
                         headers: {
