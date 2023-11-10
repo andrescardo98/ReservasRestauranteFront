@@ -11,7 +11,7 @@
         <form>
             <img src="user.png" alt="user-img"><br>
 
-            <label for="numero_identificacion">Primer nombre</label>
+            <label for="numero_identificacion">Número de identificación</label>
             <input type="text" id="numero_identificacion" placeholder="Ingresa tu número de identificación" required>
 
             <label for="primer_nombre">Primer nombre</label>
@@ -36,7 +36,7 @@
             <input type="text" id="numero_celular" placeholder="Ingresa tu número de celular" required>
             
             <label for="clave">Contraseña</label>
-            <input type="text" id="clave" placeholder="Ingresa tu contraseña" required>
+            <input type="password" id="clave" placeholder="Ingresa tu contraseña" required>
             
             <div class="box-visible">
                 <input type="checkbox" id="visible">
@@ -60,55 +60,44 @@
                 const form = document.querySelector("form");
 
                 visible.addEventListener("change", function(){
-                    if(password.type === "clave"){
-                        password.type = "text";
-                        confirmPassword.type = "text";
+                    if(password.type === "password"){
+                        clave.type = "text";
                     }else{
-                        password.type = "password";
-                        confirmPassword.type = "password";
+                        clave.type = "password";
                     }
                 });
 
                 form.addEventListener("submit", function(e){
                     e.preventDefault();
-                    window.location.href="login.html";
-                    fetch('http://localhost/reservasrestaurante/api/v1/cliente', {
+                    fetch('http://localhost:80/reservasrestaurante/api/v1/cliente', {
                     method: 'POST', 
+                    headers: {
+                            'Content-Type':'application/json',
+                        }, 
                     body: JSON.stringify({
-                        id: 'data1',
-                        identificacion: {
-                            numero_identificacion:numero_identificacion.value,
-                            tipoIdentificacion:{
-                                id:"b9fa0f1d-9d8c-444a-9804-5023602485e9",
-                            }
-                        },
-                        nombreCompleto: {
-                            primer_nombre:primer_nombre.value,
-                            segundo_nombre:segundo_nombre.value,
-                            primer_apellido:primer_apellido.value,
-                            segundo_apellido:segundo_apellido.value
-                        },
-                        correoElectronico: {
-                            correo_electronico:correo_electronico.value,
-                            correo_electronico_confirmado:false,
-                            clave:clave.value
-                        },
-                        fecha_nacimiento:fecha_nacimiento.value,
-                        pais: {
-                            id:"2309c06d-f3dd-4913-84c6-3869eff94836",
-                        },
-                        numeroCelular: {
-                            numero_celular:numero_celular.value,
-                            numero_celular_confirmado:false
-                        }
+                        identificacion:numero_identificacion.value,
+                        tipoIdentificacion:"b9fa0f1d-9d8c-444a-9804-5023602485e9",
+                        primerNombre:primer_nombre.value,
+                        segundoNombre:segundo_nombre.value,
+                        primerApellido:primer_apellido.value,
+                        segundoApellido:segundo_apellido.value,
+                        correoElectronico:correo_electronico.value,
+                        correoElectronicoConfirmado:false,
+                        clave:clave.value,
+                        fechaNacimiento:fecha_nacimiento.value,
+                        pais:"2309c06d-f3dd-4913-84c6-3869eff94836",
+                        numeroCelular:numero_celular.value,
+                        numeroCelularConfirmado:false
                     }) 
                     })
                     .then(response => response.json())
                     .then(data => {
-                    console.log(data);
+                        console.log(data);
+                        alert(data.mensajes[0]);
                     })
                     .catch(error => {
-                    console.error('Error:', error);
+                        alert(error.mensajes[0]);
+                        console.error('Error:', error);
                     });
                 });
             });

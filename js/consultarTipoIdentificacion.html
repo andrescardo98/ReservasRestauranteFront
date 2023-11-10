@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE-edge">
+        <meta name="viewport" content="width-device-width, initial-scale=1.0">
+        <title>Consulta Tipo Identificacion</title>
+        <link rel="stylesheet" href="./css/stylePais.css">
+    </head>
+    <body>
+        <form>
+            <img src="tipoIdentificacion.png" alt="user-img"><br>
+
+            <label for="nombre">Nombre del tipo de identificación</label>
+            <input type="text" id="nombre" placeholder="Ingresa el nombre">
+
+            <label for="codigo">Código del tipo de identificación</label>
+            <input type="text" id="codigo" placeholder="Ingresa el código">
+
+            <label for="estado">Estado</label>
+            <input type="checkbox" id="estado" placeholder="Ingresa el estado">
+            
+            <button type="button" onclick="consultarTipoIdentificacion()"">Consultar</button>
+        </form>
+
+        <div id="resultado"></div>
+
+        <script>
+            function consultarTipoIdentificacion(){
+                var id = document.getElementById("tipo_identificacion_id").value;
+                var nombre = document.getElementById("nombre").value;
+                var codigo = document.getElementById("codigo").value;
+                var estado = document.getElementById("estado").checked;
+                var form = document.querySelector("form");
+
+                var datos = {
+                    id: id,
+                    nombre: nombre,
+                    codigo: codigo,
+                    estado: estado
+                }
+
+                fetch('http://localhost/reservasrestaurante/api/v1/tipoidentificacion', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type':'application/json',
+                    }, 
+                    body: JSON.stringify(datos)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        nombre:"";
+                        codigo: "";
+                        console.log(data);
+                        document.getElementById("resultado").innerText = JSON.stringify(data, null, 2);
+                    })
+                    .catch(error => {
+                        alert(error.mensajes[0]);
+                        console.error('Error:', error);
+                    })
+            }
+                
+        </script>
+    </body>
+</html>
